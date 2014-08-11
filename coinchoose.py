@@ -39,13 +39,13 @@ def _request(payloadString):
             Received status code {0}.".format(r.status_code))
 
 
-def requestCurrent():
+def requestLatest():
     """Method for requesting a the lastest set of information."""
     return _request("api.php?base=BTC")
 
 
-def parseCurrentCurrencies(jsonDump):
-    """Parse the currency list from an API call."""
+def parseLatestCurrencies(jsonDump):
+    """Parse the latest currency list from an API call."""
     data = []
     rawData = json.loads(jsonDump)
     for rawDatum in rawData:
@@ -57,8 +57,8 @@ def parseCurrentCurrencies(jsonDump):
     return data
 
 
-def parseCurrentNetworkStatus(jsonDump, scrapeTime=datetime.utcnow()):
-    """Parse the current network status from API call."""
+def parseLatestNetworkStatus(jsonDump, scrapeTime=datetime.utcnow()):
+    """Parse the latest network status from API call."""
     data = []
     rawData = json.loads(jsonDump)
     for rawDatum in rawData:
@@ -78,22 +78,22 @@ class CoinchooseTest(unittest.TestCase):
 
     """"Testing suite for coinchoose module."""
 
-    def testRequestCurrent(self):
-        """Test requestCurrent."""
-        jsonDump = requestCurrent()
+    def testRequestLatest(self):
+        """Test requestLatest."""
+        jsonDump = requestLatest()
         f = open("{0}/data/test_api.json".format(
             os.path.dirname(os.path.abspath(__file__))), 'w')
         f.write(jsonDump)
         f.close()
         json.loads(jsonDump)
 
-    def testParseCurrentCurrencies(self):
-        """Method for testing parseCurrentCurrencies."""
+    def testParseLatestCurrencies(self):
+        """Method for testing parseLatestCurrencies."""
         f = open("{0}/example/api.json".format(
             os.path.dirname(os.path.abspath(__file__))), 'r')
         jsonDump = f.read()
         f.close()
-        data = parseCurrentCurrencies(jsonDump)
+        data = parseLatestCurrencies(jsonDump)
         self.assertEqual(len(data), 59)
         expectedFirst = {
             'symbol': 'ALF',
@@ -108,14 +108,14 @@ class CoinchooseTest(unittest.TestCase):
         }
         self.assertEqual(data[-1], expectedLast)
 
-    def testParseCurrentNetworkStatus(self):
-        """Method for testing parseCurrentNetworkStatus."""
+    def testParseLatestNetworkStatus(self):
+        """Method for testing parseLatestNetworkStatus."""
         f = open("{0}/example/api.json".format(
             os.path.dirname(os.path.abspath(__file__))), 'r')
         jsonDump = f.read()
         f.close()
         now = datetime.utcnow()
-        data = parseCurrentNetworkStatus(jsonDump, scrapeTime=now)
+        data = parseLatestNetworkStatus(jsonDump, scrapeTime=now)
         self.assertEqual(len(data), 59)
         expectedFirst = {
             'symbol': 'ALF',

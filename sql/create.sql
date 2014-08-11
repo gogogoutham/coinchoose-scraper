@@ -1,60 +1,43 @@
-CREATE TABLE IF NOT EXISTS message (
-    sid BIGINT,
-    topic INTEGER,
-    topic_position INTEGER,
-    member INTEGER,
-    post_time TIMESTAMP,
-    subject TEXT,
-    link TEXT,
-    content TEXT,
-    content_no_html TEXT,
-    content_no_quote TEXT,
-    content_no_quote_no_html TEXT,
-    db_update_time TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
-    PRIMARY KEY (sid)
-);
-CREATE INDEX ON message (topic, topic_position);
-CREATE INDEX ON message (topic, member);
-CREATE INDEX ON message (member, topic);
-CREATE INDEX ON message (post_time);
-
-CREATE TABLE IF NOT EXISTS topic (
-    sid INTEGER,
+CREATE TABLE IF NOT EXISTS currency (
+    symbol VARCHAR(10),
     name VARCHAR(255),
-    board INTEGER,
-    num_pages INTEGER,
-    count_read INTEGER,
+    algo VARCHAR(255),
     db_update_time TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
-    PRIMARY KEY (sid)
+    PRIMARY KEY (symbol)
 );
-CREATE INDEX ON topic (name);
-CREATE INDEX ON topic (board);
+CREATE INDEX ON currency (name);
+CREATE INDEX ON currency (algo);
 
-CREATE TABLE IF NOT EXISTS board (
-    sid INTEGER,
+CREATE TABLE IF NOT EXISTS currency_historical (
+    symbol VARCHAR(10),
     name VARCHAR(255),
-    parent INTEGER,
-    container VARCHAR(255),
-    num_pages INTEGER,
+    algo VARCHAR(255),
     db_update_time TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
-    PRIMARY KEY(sid)
+    PRIMARY KEY (symbol, name, algo)
 );
-CREATE INDEX ON board (name);
 
-CREATE TABLE IF NOT EXISTS member (
-    sid INTEGER,
-    name VARCHAR(255),
-    position VARCHAR(255),
-    date_registered TIMESTAMP,
-    last_active TIMESTAMP,
-    email VARCHAR(255),
-    website_name TEXT,
-    website_link TEXT,
-    bitcoin_address VARCHAR(50),
-    other_contact_info TEXT,
-    signature TEXT,
+CREATE TABLE IF NOT EXISTS network_status (
+    scrape_time TIMESTAMP,
+    symbol VARCHAR(10),
+    current_blocks BIGINT,
+    difficulty DECIMAL,
+    reward DECIMAL,
+    hash_rate DECIMAL,
+    avg_hash_rate DECIMAL,
     db_update_time TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
-    PRIMARY KEY(sid)
+    PRIMARY KEY (scrape_time, symbol)
 );
-CREATE INDEX ON member (name);
-CREATE INDEX ON member (bitcoin_address);
+CREATE UNIQUE INDEX ON network_status (symbol, scrape_time);
+
+CREATE TABLE IF NOT EXISTS network_status_latest (
+    scrape_time TIMESTAMP,
+    symbol VARCHAR(10),
+    current_blocks BIGINT,
+    difficulty DECIMAL,
+    reward DECIMAL,
+    hash_rate DECIMAL,
+    avg_hash_rate DECIMAL,
+    db_update_time TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
+    PRIMARY KEY (symbol)
+);
+CREATE UNIQUE INDEX ON network_status_latest (symbol, current_blocks, difficulty, hash_rate, avg_hash_rate);
