@@ -23,4 +23,4 @@ d) Create "data" folder within the application folder, or change the _saveToFile
 Usage
 =====
 
-
+Simply run "python scrape.py".
