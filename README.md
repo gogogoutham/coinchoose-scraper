@@ -1,7 +1,7 @@
 coinchoose-scraper
 ===================
 
-Python-based scraper / crawler for cryptocurrency network information on coinchooose.com
+Python-based scraper for cryptocurrency network information on coinchooose.com
 
 Installation
 =============
