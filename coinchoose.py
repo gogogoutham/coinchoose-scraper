@@ -65,11 +65,11 @@ def parseLatestNetworkStatus(jsonDump, scrapeTime=datetime.utcnow()):
         datum = {}
         datum['symbol'] = rawDatum['symbol']
         datum['scrape_time'] = scrapeTime
-        datum['current_blocks'] = long(rawDatum['currentBlocks'])
-        datum['difficulty'] = Decimal(rawDatum['difficulty'])
-        datum['reward'] = Decimal(rawDatum['reward'])
-        datum['hash_rate'] = long(rawDatum['networkhashrate'])
-        datum['avg_hash_rate'] = Decimal(rawDatum['avgHash'])
+        datum['current_blocks'] = long(rawDatum['currentBlocks']) if rawDatum['currentBlocks'] is not None else None
+        datum['difficulty'] = Decimal(rawDatum['difficulty']) if rawDatum['difficulty'] is not None else None
+        datum['reward'] = Decimal(rawDatum['reward']) if rawDatum['reward'] is not None else None
+        datum['hash_rate'] = long(rawDatum['networkhashrate']) if rawDatum['networkhashrate'] is not None else None
+        datum['avg_hash_rate'] = Decimal(rawDatum['avgHash']) if rawDatum['avgHash'] is not None else None
         data.append(datum)
     return data
 
